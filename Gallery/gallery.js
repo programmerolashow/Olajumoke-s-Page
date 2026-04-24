@@ -2,6 +2,25 @@ const overlay = document.getElementById("mediaOverlay");
 const overlayImg = document.getElementById("overlayImage");
 const overlayVideo = document.getElementById("overlayVideo");
 const closeBtn = document.querySelector(".close-overlay");
+const galleryVideos = document.querySelectorAll(".gallery video");
+
+/* HELPER: PAUSE ALL GALLERY VIDEOS */
+function pauseAllGalleryVideos() {
+    galleryVideos.forEach(v => {
+        v.pause();
+    });
+}
+
+/* ENSURE ONLY ONE GALLERY VIDEO PLAYS AT A TIME */
+galleryVideos.forEach(video => {
+    video.addEventListener("play", () => {
+        galleryVideos.forEach(v => {
+            if (v !== video) v.pause();
+        });
+        // Also pause overlay video if it's playing
+        overlayVideo.pause();
+    });
+});
 
 /* OPEN IMAGE */
 
@@ -9,6 +28,7 @@ document.querySelectorAll(".gallery img").forEach(img => {
 
     img.addEventListener("click", () => {
 
+        pauseAllGalleryVideos();
         overlay.classList.add("active");
 
         overlayImg.src = img.src;
@@ -24,10 +44,11 @@ document.querySelectorAll(".gallery img").forEach(img => {
 
 /* OPEN VIDEO */
 
-document.querySelectorAll(".gallery video").forEach(video => {
+galleryVideos.forEach(video => {
 
     video.addEventListener("click", () => {
 
+        pauseAllGalleryVideos();
         overlay.classList.add("active");
 
         const videoSrc = video.querySelector("source").src;
@@ -44,21 +65,17 @@ document.querySelectorAll(".gallery video").forEach(video => {
 
 });
 
+/* OVERLAY VIDEO PLAY LOGIC */
+
+overlayVideo.addEventListener("play", () => {
+    pauseAllGalleryVideos();
+});
+
 /* RESET VIDEO WHEN FINISHED */
 
 overlayVideo.addEventListener("ended", () => {
 
     overlayVideo.currentTime = 0;
-
-});
-
-/* RESET IF USER PAUSES */
-
-overlayVideo.addEventListener("pause", () => {
-
-    if(!overlayVideo.ended){
-        overlayVideo.currentTime = 0;
-    }
 
 });
 
@@ -77,7 +94,7 @@ closeBtn.addEventListener("click", () => {
 
 overlay.addEventListener("click", (e) => {
 
-    if(e.target === overlay){
+    if(e.target === overlay || e.target.classList.contains("overlay-content")){
 
         overlay.classList.remove("active");
 

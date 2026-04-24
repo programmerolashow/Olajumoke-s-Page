@@ -131,8 +131,12 @@ body{
     color: #e0e7ff; /* lighter text for dark background */
 }
 
-/* RESPONSIVE: STACK ON MOBILE */
-@media (max-width: 768px) {
+/* RESPONSIVE: STACK ON TABLET (780px) */
+@media (max-width: 780px) {
+    .section {
+        padding: 60px 5%;
+    }
+
     .about-container, .vision-container {
         flex-direction: column;
         text-align: center;
@@ -145,13 +149,18 @@ body{
 
     .about-text p, .vision-text p {
         text-align: center;
+        font-size: 1rem;
+    }
+
+    .about-img, .vision-img {
+        width: 280px;
     }
 }
 /* GALLERY */
 
 .gallery-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(20px,1fr));
+    grid-template-columns:repeat(4,1fr);
     gap:20px;
 }
 
@@ -160,6 +169,25 @@ body{
     height:350px;
     object-fit:cover;
     border-radius:15px;
+}
+
+@media(max-width:780px) {
+    .gallery-grid {
+        gap: 10px;
+    }
+    .gallery-grid img {
+        height: 200px;
+    }
+}
+
+@media(max-width:458px) {
+    .gallery-grid {
+        gap: 5px;
+    }
+    .gallery-grid img {
+        height: 120px;
+        border-radius: 8px;
+    }
 }
 /* BUTTON STYLING */
 .btn {
@@ -186,11 +214,11 @@ body{
     margin-top: 20px;
 }
 
-/* Responsive tweaks for small screens */
-@media(max-width:768px){
+/* Responsive tweaks for tablet */
+@media(max-width:780px){
     .btn {
         margin-top: 20px;
-        padding: 14px 28px;
+        padding: 12px 24px;
     }
 }
 
@@ -258,9 +286,58 @@ footer{
     animation:floatShake 5s infinite ease-in-out;
 }
 
-/* MOBILE */
+/* MOBILE BREAKPOINT (458px) */
+@media(max-width:458px){
+    .navbar {
+        padding: 15px 5%;
+    }
 
-@media(max-width:768px){
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero p {
+        font-size: 0.9rem;
+    }
+
+    .profile {
+        width: 180px;
+        height: 180px;
+    }
+
+    .about-img, .vision-img {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .contact-card {
+        padding: 20px;
+    }
+
+}
+
+/* DESKTOP OPTIMIZATIONS (1440px) */
+@media(min-width:1440px){
+    .about-container, .vision-container, .contact-grid, .gallery-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+    }
+
+    .section h2 {
+        font-size: 2.5rem;
+    }
+}
+
+/* TABLET MENU LOGIC (780px) */
+@media(max-width:780px){
 
 .menu-toggle{
     display:flex;
@@ -277,6 +354,7 @@ footer{
     padding:100px 30px;
     gap:20px;
     transition:0.3s;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.5);
 }
 
 .nav-links.active{
@@ -288,5 +366,6 @@ footer{
     flex-direction:column;
     text-align:center;
 }
+
 
 }
