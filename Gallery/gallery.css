@@ -230,19 +230,22 @@ footer{
 
 .overlay-content img,
 .overlay-content video{
-  max-width:90%;
-  max-height:85vh;
-  border-radius:12px;
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
+  border-radius: 0;
 }
 
 /* CLOSE BUTTON */
 
 .close-overlay{
   position:absolute;
-  top:30px;
-  right:40px;
+  top:20px;
+  right:30px;
 
-  font-size:40px;
+  font-size:50px;
   color:white;
   cursor:pointer;
+  z-index: 2100;
+  text-shadow: 0 0 10px rgba(0,0,0,0.5);
 }

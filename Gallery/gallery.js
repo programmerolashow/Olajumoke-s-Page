@@ -8,6 +8,7 @@ const galleryVideos = document.querySelectorAll(".gallery video");
 function pauseAllGalleryVideos() {
     galleryVideos.forEach(v => {
         v.pause();
+        v.currentTime = 0; // Reset to "actual form" (thumbnail)
     });
 }
 
@@ -71,11 +72,23 @@ overlayVideo.addEventListener("play", () => {
     pauseAllGalleryVideos();
 });
 
+/* CLOSE OVERLAY WHEN VIDEO IS PAUSED */
+
+overlayVideo.addEventListener("pause", () => {
+
+    if(overlay.classList.contains("active") && overlayVideo.style.display === "block"){
+        overlay.classList.remove("active");
+        pauseAllGalleryVideos();
+    }
+
+});
+
 /* RESET VIDEO WHEN FINISHED */
 
 overlayVideo.addEventListener("ended", () => {
 
-    overlayVideo.currentTime = 0;
+    overlay.classList.remove("active");
+    pauseAllGalleryVideos();
 
 });
 
@@ -84,9 +97,8 @@ overlayVideo.addEventListener("ended", () => {
 closeBtn.addEventListener("click", () => {
 
     overlay.classList.remove("active");
-
     overlayVideo.pause();
-    overlayVideo.currentTime = 0;
+    pauseAllGalleryVideos();
 
 });
 
@@ -97,9 +109,8 @@ overlay.addEventListener("click", (e) => {
     if(e.target === overlay || e.target.classList.contains("overlay-content")){
 
         overlay.classList.remove("active");
-
         overlayVideo.pause();
-        overlayVideo.currentTime = 0;
+        pauseAllGalleryVideos();
 
     }
 
