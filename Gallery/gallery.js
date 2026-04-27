@@ -23,44 +23,56 @@ galleryVideos.forEach(video => {
     });
 });
 
-/* OPEN IMAGE */
+/* OPEN MEDIA HELPER */
+function openMedia(type, src) {
+    pauseAllGalleryVideos();
+    overlay.classList.add("active");
 
-document.querySelectorAll(".gallery img").forEach(img => {
-
-    img.addEventListener("click", () => {
-
-        pauseAllGalleryVideos();
-        overlay.classList.add("active");
-
-        overlayImg.src = img.src;
+    if (type === "image") {
+        overlayImg.src = src;
         overlayImg.style.display = "block";
-
         overlayVideo.style.display = "none";
         overlayVideo.pause();
+    } else {
+        overlayVideo.src = src;
+        overlayVideo.style.display = "block";
+        overlayImg.style.display = "none";
         overlayVideo.currentTime = 0;
+        overlayVideo.play().catch(err => {
+            console.warn("Autoplay was prevented:", err);
+        });
+    }
+}
 
+/* OPEN IMAGE */
+document.querySelectorAll(".gallery img").forEach(img => {
+    img.addEventListener("click", () => {
+        openMedia("image", img.src);
     });
-
 });
 
+/* OPEN VIDEO */
 galleryVideos.forEach(video => {
     video.addEventListener("click", (e) => {
-        pauseAllGalleryVideos();
-        overlay.classList.add("active");
-
+        e.preventDefault();
         const sourceTag = video.querySelector("source");
         const videoSrc = sourceTag ? sourceTag.src : video.src;
-
         if (videoSrc) {
-            overlayVideo.src = videoSrc;
-            overlayVideo.style.display = "block";
-            overlayImg.style.display = "none";
-            overlayVideo.currentTime = 0;
-            overlayVideo.play().catch(err => {
-                console.warn("Autoplay was prevented:", err);
-            });
+            openMedia("video", videoSrc);
         }
     });
+
+    // Mobile specific: Listen for touchstart to trigger overlay faster
+    video.addEventListener("touchstart", (e) => {
+        // Only trigger if not already active
+        if(!overlay.classList.contains("active")) {
+            const sourceTag = video.querySelector("source");
+            const videoSrc = sourceTag ? sourceTag.src : video.src;
+            if (videoSrc) {
+                openMedia("video", videoSrc);
+            }
+        }
+    }, { passive: true });
 });
 
 /* OVERLAY VIDEO PLAY LOGIC */
