@@ -43,27 +43,24 @@ document.querySelectorAll(".gallery img").forEach(img => {
 
 });
 
-/* OPEN VIDEO */
-
 galleryVideos.forEach(video => {
-
-    video.addEventListener("click", () => {
-
+    video.addEventListener("click", (e) => {
         pauseAllGalleryVideos();
         overlay.classList.add("active");
 
-        const videoSrc = video.querySelector("source").src;
+        const sourceTag = video.querySelector("source");
+        const videoSrc = sourceTag ? sourceTag.src : video.src;
 
-        overlayVideo.src = videoSrc;
-        overlayVideo.style.display = "block";
-
-        overlayImg.style.display = "none";
-
-        overlayVideo.currentTime = 0;
-        overlayVideo.play();   // auto play
-
+        if (videoSrc) {
+            overlayVideo.src = videoSrc;
+            overlayVideo.style.display = "block";
+            overlayImg.style.display = "none";
+            overlayVideo.currentTime = 0;
+            overlayVideo.play().catch(err => {
+                console.warn("Autoplay was prevented:", err);
+            });
+        }
     });
-
 });
 
 /* OVERLAY VIDEO PLAY LOGIC */
@@ -72,16 +69,15 @@ overlayVideo.addEventListener("play", () => {
     pauseAllGalleryVideos();
 });
 
-/* CLOSE OVERLAY WHEN VIDEO IS PAUSED */
-
+/* CLOSE OVERLAY WHEN VIDEO IS PAUSED - REMOVED */
+/*
 overlayVideo.addEventListener("pause", () => {
-
     if(overlay.classList.contains("active") && overlayVideo.style.display === "block"){
         overlay.classList.remove("active");
         pauseAllGalleryVideos();
     }
-
 });
+*/
 
 /* RESET VIDEO WHEN FINISHED */
 
